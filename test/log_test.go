@@ -8,7 +8,7 @@ import (
 )
 
 func TestLogger(t *testing.T) {
-	logger, err := tools.NewLogger(tools.NO_LOG_TO_FILE)
+	logger, err := tools.NewLogger("a/b/c/d/1.log", tools.NO_STDOUT)
 	if err != nil {
 		t.Fatalf("%+v", err)
 	}

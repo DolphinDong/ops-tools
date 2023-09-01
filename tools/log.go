@@ -10,9 +10,16 @@ import (
 	"path/filepath"
 )
 
-const NO_LOG_TO_FILE = ""
+const (
+	NO_LOG_TO_FILE = ""
+	NEED_STDOUT    = true
+	NO_STDOUT      = false
+)
 
-func NewLogger(logPath string) (*logrus.Logger, error) {
+func NewLogger(logPath string, needStdout bool) (*logrus.Logger, error) {
+	if logPath == "" && !needStdout {
+		return nil, errors.New("logger output not set")
+	}
 	logger := logrus.New()
 	logger.Formatter = &nested.Formatter{
 		TimestampFormat: "2006-01-02 15:04:05",
@@ -29,9 +36,15 @@ func NewLogger(logPath string) (*logrus.Logger, error) {
 		if err != nil {
 			return nil, errors.WithStack(err)
 		}
-		logger.SetOutput(io.MultiWriter(logfile, os.Stdout))
+		if needStdout {
+			logger.SetOutput(io.MultiWriter(logfile, os.Stdout))
+		} else {
+			logger.SetOutput(io.MultiWriter(logfile))
+		}
 	} else {
-		logger.SetOutput(os.Stdout)
+		if needStdout {
+			logger.SetOutput(os.Stdout)
+		}
 	}
 	return logger, nil
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"log"
 	"ops-tools/pkg/envconfig"
 	"ops-tools/tools"
 )
@@ -15,7 +15,11 @@ var (
 func main() {
 	InitEnvConfigCmd()
 	if err := envConfigCmd.Execute(); err != nil {
-		errors.WithStack(err)
+		if envconfig.Logger == nil {
+			log.Fatalf("%+v", err)
+		} else {
+			envconfig.Logger.Fatalf("%+v", err)
+		}
 	}
 }
 func InitEnvConfigCmd() {
@@ -28,11 +32,11 @@ func NewEnvConfigCmd() *cobra.Command {
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
 			err = tools.ReadYaml2Options(configPath, &envconfig.Options)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
-			envconfig.Logger, err = tools.NewLogger(envconfig.Options.LogPath)
+			envconfig.Logger, err = tools.NewLogger(envconfig.Options.LogPath, tools.NEED_STDOUT)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			return nil
 		},
