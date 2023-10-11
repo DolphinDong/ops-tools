@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"ops-tools/tools"
+	"github.com/DolphinDong/ops-tools/tools"
 	"path/filepath"
 	"testing"
 )

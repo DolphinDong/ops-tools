@@ -1,8 +1,8 @@
 package test
 
 import (
-	"ops-tools/pkg/envconfig"
-	"ops-tools/tools"
+	"github.com/DolphinDong/ops-tools/pkg/envconfig"
+	"github.com/DolphinDong/ops-tools/tools"
 	"testing"
 )
 

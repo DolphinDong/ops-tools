@@ -1,0 +1,9 @@
+log_path: ""
+input_excel_path: "E:/alauda/数广/漏洞修复/2023-10-10/TKE-2.xlsx"
+sheet_sort_config:
+  need_create_sub_dir: false
+  output_path: "E:/文件/test/aaa"
+  sort_field: "漏洞名称"
+  sheet_name: "Sheet1"
+  exclude_rule:
+    "危险程度": "低危"

@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/DolphinDong/ops-tools/pkg/envconfig"
 	"github.com/spf13/cobra"
 	"log"
-	"ops-tools/pkg/envconfig"
-	"ops-tools/tools"
 )
 
 var (
@@ -25,24 +24,10 @@ func main() {
 func InitEnvConfigCmd() {
 	envConfigCmd = NewEnvConfigCmd()
 	envConfigCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "./config.yaml", "config path")
+	InitInitEnvCmd()
 }
 func NewEnvConfigCmd() *cobra.Command {
 	return &cobra.Command{
 		Use: "envconfig",
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
-			err = tools.ReadYaml2Options(configPath, &envconfig.Options)
-			if err != nil {
-				return err
-			}
-			envconfig.Logger, err = tools.NewLogger(envconfig.Options.LogPath, tools.NEED_STDOUT)
-			if err != nil {
-				return err
-			}
-			return nil
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			envconfig.Logger.Info("hahahhahah")
-			return nil
-		},
 	}
 }
